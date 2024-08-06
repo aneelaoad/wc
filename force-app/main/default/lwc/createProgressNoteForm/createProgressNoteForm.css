@@ -1,0 +1,36 @@
+.progress-note-form {
+    padding: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.form-col-full {
+    flex: 1 0 100%;
+}
+
+.slds-form-element_horizontal, .slds-form-element__control{
+    padding: 0 !important;
+    clear:left !important;
+}
+h1{
+    /* margin-bottom: 2rem; */
+    font-size: 1.7rem;
+}
+header{
+     border-bottom: 1px solid #dddddd;
+    padding:  10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.buttons{
+        display: flex;
+    justify-content: center;
+}

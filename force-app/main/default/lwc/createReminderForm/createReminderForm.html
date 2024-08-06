@@ -1,0 +1,90 @@
+<template>
+    <lightning-card>
+        <lightning-quick-action-panel header="New Reminder">
+
+        </lightning-quick-action-panel>
+        <div class="reminder-form">
+            <div class="slds-grid slds-gutters slds-m_bottom_medium">
+                <div class="slds-col slds-size_1-of-2">
+                    <!-- <p> <strong>Patient Details: </strong> {contactName} </p> -->
+                    <lightning-input label="Member Details" type="text" value={contactName} disbaled >
+                    </lightning-input>
+
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+
+                    <lightning-input label="Related To" type="text" value={relatedEncounter}
+                    disbaled >
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <!-- <p> <strong>Related Encounter: </strong> {relatedEncounter} </p> -->
+
+                </div>
+            </div>
+            <div class="slds-grid slds-gutters slds-m_bottom_medium">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input label="Subject" value={subject} onchange={handleSubjectChange} >
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input label="Type" type="text" value={type} onchange={handleTypeChange} disabled>
+                    </lightning-input>
+
+                </div>
+            </div>
+            <div class="slds-grid slds-gutters slds-m_bottom_medium">
+                <div class="slds-col slds-size_1-of-2">
+
+                    <lightning-input label="Due Date" type="date" value={dueDate} onchange={handleDueDateChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+
+                    <lightning-input label="Assigned To" type="text" value={assignTo} onchange={handleAssignToChange}>
+                    </lightning-input>
+                    <!-- <lightning-record-picker label="Select a record" placeholder="Search..." object-api-name="Contact"
+                        value={initialValue} onchange={handleChange}></lightning-record-picker> -->
+
+                </div>
+
+            </div>
+            <div class="slds-grid slds-gutters slds-m_bottom_medium">
+                <div class="slds-col slds-size_1-of-2">
+
+                    <lightning-combobox name="Priority" label="Priority" value={priority} options={priorityOptions}
+                        onchange={handlePriorityChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+
+                    <lightning-combobox name="status" label="Status" options={statusOptions} value={status}
+                        onchange={handleStatusChange}></lightning-combobox>
+
+                </div>
+
+            </div>
+            <div class="form-row">
+
+                <div class="form-col-full">
+                    <lightning-input label="Comments" value={comments} onchange={handleCommentsChange}>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-m-top_medium buttons ">
+                <div class="save-button">
+                    <lightning-button label="Save" variant="brand" onclick={handleSave}>
+                    </lightning-button>
+                </div>
+
+                <div class="cancel-button">
+                    <lightning-button label="Cancel" onclick={handleClose} class="slds-m-left_x-small">
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+        <template if:true={showLoader}>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </template>
+    </lightning-card>
+</template>

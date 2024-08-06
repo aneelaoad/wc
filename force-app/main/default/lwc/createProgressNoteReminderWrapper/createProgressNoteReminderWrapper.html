@@ -1,0 +1,26 @@
+<template>
+    <div if:true={showPNReminderPopUp}>
+        <lightning-card>
+            <template if:true={showLoader}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+            <template if:true={showPNForm}>
+                <c-create-progress-note-form 
+                    encounter-id={recordId}
+                    onpncreated={handlePNCreated}
+                    onclose={handleClose}
+                    encounter-type={selectedRecordTypeName}>
+                </c-create-progress-note-form>
+            </template>
+            <template if:true={showReminderForm}>
+                <c-create-reminder-form 
+                    onclose={handleClose} 
+                    created-pn-id={createdPNId} 
+                    onshowloader={handleShowLoader} 
+                    onhideloader={handleHideLoader}
+                    encounter-id={recordId}>
+                </c-create-reminder-form>
+            </template>
+        </lightning-card>
+    </div>
+</template>

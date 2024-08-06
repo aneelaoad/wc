@@ -1,0 +1,31 @@
+/* Example: Centering the form content */
+.reminder-form{
+    padding: 10px 20px;
+}
+h1{
+    /* margin-bottom: 2rem; */
+    font-size: 1.7rem;
+}
+header{
+     border-bottom: 1px solid #dddddd;
+    padding:  10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.buttons{
+    display: flex;
+    justify-content: center;
+}
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.form-col-full {
+    flex: 1 0 100%;
+}
