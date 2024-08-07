@@ -3,6 +3,7 @@ import getProgressNoteRecordTypeIds from '@salesforce/apex/ProgressNoteReminderC
 import getContactIdForCase from '@salesforce/apex/ProgressNoteReminderController.getContactIdForCase';
 
 export default class CreateProgressNoteForm extends LightningElement {
+    @api recordId
     @api encounterId;
     @api encounterType;
     @track recordTypeId;
@@ -15,10 +16,13 @@ export default class CreateProgressNoteForm extends LightningElement {
             this.showLoader = false;
             if (this.encounterType === 'Medical Encounter' || this.encounterType === 'High Privacy Encounter') {
                 this.recordTypeId = data['Medical Progress Note'];
+            console.log('encounterType:', this.encounterType);
+            console.log('PN:', data['Medical Progress Note']);
+
             } else if (this.encounterType === 'Admin Encounter') {
                 this.recordTypeId = data['Admin Progress Note'];
             }
-            console.log('recordTypeId:', this.recordTypeId);
+            // console.log('recordTypeId:', this.recordTypeId);
             console.log('encounterType:', this.encounterType);
         } else if (error) {
             this.showLoader = false;
@@ -47,11 +51,10 @@ export default class CreateProgressNoteForm extends LightningElement {
     }
 
        @wire(getContactIdForCase, { caseId: '$encounterId' })
-    wiredContactId({ error, data }) {
+        wiredContactId({ error, data }) {
         if (data) {
             this.contactName = data;
             console.log('OUTPUT : ',this.contactName);
-            this.encounterId = this.recordId; // Assuming recordId is the encounterId
         } else if (error) {
             console.error('Error fetching contact ID:', error);
         }

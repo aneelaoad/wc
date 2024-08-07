@@ -17,14 +17,17 @@ public class ProgressNoteReminderController {
     }
 
  @AuraEnabled
-public static Id createReminder(String subject, Date dueDate, Id whatId, String type, String comments, Id encounterId) {
+public static Id createReminder(String subject, Date dueDate, Id whatId, String type, String comments, Id encounterId, String priority, String status, Id assignTo) {
     Task newTask = new Task(
         Subject = subject,
         ActivityDate = dueDate,
         WhatId = whatId,
         Type = type, 
         Description =comments, 
-        Encounter__c = encounterId 
+        Encounter__c = encounterId, 
+        OwnerId = assignTo,
+        Status=status,
+        Priority=priority
     );
     System.debug('reminder created!'+newTask);
     insert newTask;
@@ -82,34 +85,45 @@ public static Map<String, List<Map<String, String>>> getReminderPicklistValues()
     return picklistOptions;
 }
 
-    @AuraEnabled(cacheable=true)
-    public static String getCaseContactName(Id caseId) {
-        Case caseRecord = [SELECT Contact.Name FROM Case WHERE Id = :caseId LIMIT 1];
-        if (caseRecord.Contact != null) {
-            return caseRecord.Contact.Name;
-        } else {
-            return null; 
-        }
-    }
-    @AuraEnabled(cacheable=true)
-    public static String getRelatedEncounter(Id caseId) {
-        Case caseRecord = [SELECT CaseNumber FROM Case WHERE Id = :caseId LIMIT 1];
-        if (caseRecord != null) {
-            return caseRecord.CaseNumber;
-        } else {
-            return null; 
-        }
-    }
+    // @AuraEnabled(cacheable=true)
+    // public static String getCaseContactName(Id caseId) {
+    //     Case caseRecord = [SELECT Contact.Name FROM Case WHERE Id = :caseId LIMIT 1];
+    //     if (caseRecord.Contact != null) {
+    //         return caseRecord.Contact.Name;
+    //     } else {
+    //         return null; 
+    //     }
+    // }
+    // @AuraEnabled(cacheable=true)
+    // public static String getRelatedEncounter(Id caseId) {
+    //     Case caseRecord = [SELECT CaseNumber FROM Case WHERE Id = :caseId LIMIT 1];
+    //     if (caseRecord != null) {
+    //         return caseRecord.CaseNumber;
+    //     } else {
+    //         return null; 
+    //     }
+    // }
 
 
-    @AuraEnabled(cacheable=true)
-    public static String getCurrentUserContactId() {
-        String contactId;
-        User currentUser = [SELECT Name FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
-        if(currentUser != null) {
-            contactId = currentUser.Name;
+    // @AuraEnabled(cacheable=true)
+    // public static String getCurrentUserContactId() {
+    //     String contactId;
+    //     User currentUser = [SELECT Name FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
+    //     if(currentUser != null) {
+    //         contactId = currentUser.Name;
+    //     }
+    //     System.debug('contactId'+ contactId);
+    //     return contactId;
+    // }
+
+
+    @AuraEnabled
+    public static String getSObjectType(String recordId) {
+        if (String.isNotBlank(recordId)) {
+            Schema.SObjectType objType = Id.valueOf(recordId).getSObjectType();
+            return objType.getDescribe().getName();
         }
-        System.debug('contactId'+ contactId);
-        return contactId;
+        return null;
     }
+    
 }

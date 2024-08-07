@@ -3,57 +3,64 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import createReminder from '@salesforce/apex/ProgressNoteReminderController.createReminder';
 import getReminderPicklistValues from '@salesforce/apex/ProgressNoteReminderController.getReminderPicklistValues';
 import { CloseActionScreenEvent } from 'lightning/actions'; 
-import getCaseContactName from '@salesforce/apex/ProgressNoteReminderController.getCaseContactName';
-// import getRelatedEncounter from '@salesforce/apex/ProgressNoteReminderController.getRelatedEncounter';
-import getCurrentUserContactId from '@salesforce/apex/ProgressNoteReminderController.getCurrentUserContactId';
+import { getRecord } from "lightning/uiRecordApi";
 const CASE_FIELDS = ['Case.Id', 'Case.CaseNumber', 'Case.Member_Details__c','Case.ContactId'];
 const PN_FIELDS = ['Progress_Note__c.Encounter__c','Progress_Note__c.Encounter__r.CaseNumber', 'Progress_Note__c.Encounter__r.Member_Details__c', 'Progress_Note__c.Encounter__r.ContactId'];
-import { getRecord } from "lightning/uiRecordApi";
+import Id from '@salesforce/user/Id';
 
 export default class CreateReminderForm extends LightningElement {
     @api encounterId;
+    @api parentRecordId;
     subject = '';
     dueDate = '';
     type = '';
     comments = '';
-    assignTo = '';
+    assignTo = Id;
     status = 'Active';
     priority= 'High'
     showLoader = false;
     relatedEncounter;
-   type = "Reminder"
-   priorityOptions = [];
-   statusOptions = []
+    type = "Reminder"
+    priorityOptions = [];
+    statusOptions = []
     @api createdPnId;
    contactName;
-
    _recordId
-   _checkRecordId;
 
 
    @api set recordId(value) {
        this._recordId = value;
        console.log("api _recordId: " + this._recordId);
     //    this.setCheckRecordId();
-         this.getObjectName(this._recordId);
 
    }
 
    get recordId() {
        return this._recordId;
    }
-
+//    checkRecordId
    @api
     set checkRecordId(value) {
         this._checkRecordId = value;
+    //    this.setCheckRecordId();
+
     }
 
     get checkRecordId() {
         return this._checkRecordId;
     }
 
+   
     setCheckRecordId() {
-        this.checkRecordId = this.encounterId || this.recordId;
+        
+   
+        this.checkRecordId = this.parentRecordId || this.recordId;
+        console.log('------------------');
+        console.log('parentRecordId: ',this.parentRecordId);
+        console.log('recordId',this.recordId);
+        console.log('checkRecordId', this.checkRecordId);
+        console.log('------------------');
+ 
     }
 
     handleSubjectChange(event) {
@@ -83,14 +90,13 @@ export default class CreateReminderForm extends LightningElement {
     
     handleSave() {
         this.showLoader = true;
-        // const checkRecordId = this.encounterId || this.recordId;
-        console.log('checkRecordId: '+checkRecordId);
+        console.log('checkRecordId: '+this.encounterId);
         createReminder({
             subject: this.subject,
             dueDate: this.dueDate,
-            whatId: this.encounterId,
+            whatId: this.checkRecordId,
             comments: this.comments,
-            encounterId: this.checkRecordId,
+            encounterId: this.encounterId,
             type: this.type,
             priority: this.priority,
             assignTo: this.assignTo,
@@ -154,41 +160,49 @@ export default class CreateReminderForm extends LightningElement {
 
     @wire(getRecord, { recordId: "$checkRecordId", fields: CASE_FIELDS })
     encounterDetails(result) {
-        console.log('encounterDetails result '+JSON.stringify(result));
+        // console.log('encounterDetails result '+JSON.stringify(result));
         if (typeof result.data !== "undefined") {
             const objectRecords = result.data.fields;
-            console.log('this.objectRecords '+JSON.stringify(objectRecords));
+            console.log('Encounter Records: '+JSON.stringify(objectRecords));
             this.contactName = objectRecords.Member_Details__c.value;
             this.relatedEncounter = objectRecords.CaseNumber.value;
       
         }
     }
 
-    @wire(getRecord, { recordId: "$createdPnId", fields: PN_FIELDS })
+    @wire(getRecord, { recordId: "$checkRecordId", fields: PN_FIELDS })
     progressNoteDetails(result) {
-        console.log('progressNoteDetails result '+JSON.stringify(result));
+        // console.log('progressNoteDetails result '+JSON.stringify(result));
         if (typeof result.data !== "undefined") {
             const objectRecords = result.data.fields;
-            console.log('this.objectRecords '+JSON.stringify(objectRecords));
+            console.log('Progress Note Records: '+JSON.stringify(objectRecords));
             this.contactName = objectRecords.Encounter__r.value.fields.Member_Details__c.value;
             this.relatedEncounter = objectRecords.Encounter__r.value.fields.CaseNumber.value;
        
         }
     }
+    
 
-    getObjectName(recordIdd) {
-        getSObjectType({ recordId : recordIdd })
-            .then((result) => {
-                if(result == 'Case'){
-                    // this.checkRecordId =
-                //   this.encounterId = recordIdd;
-                //   this.taskencounterId = recordIdd;
-                }else{
-                 this.createdpnId = recordIdd;
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    // getObjectName(recordId) {
+    //     getSObjectType({ recordId })
+    //         .then(result => {
+    //             if (result === 'Case') {
+    //                 this.encounterId = recordId; // For Case
+    //                 this.showPNForm = true;
+    //             } else {
+    //                 this.createdPnId = recordId; // For Progress Note
+    //                 this.showReminderForm = true;
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error('Error determining object type:', error);
+    //         });
+    // }
+
+
+    connectedCallback(){
+        console.log('parent id: '+ this.parentRecordId);
+        // this.fetchProgressNoteDetails();
+
     }
 }

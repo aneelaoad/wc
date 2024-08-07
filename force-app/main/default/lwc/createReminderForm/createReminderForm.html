@@ -7,14 +7,14 @@
             <div class="slds-grid slds-gutters slds-m_bottom_medium">
                 <div class="slds-col slds-size_1-of-2">
                     <!-- <p> <strong>Patient Details: </strong> {contactName} </p> -->
-                    <lightning-input label="Member Details" type="text" value={contactName} disbaled >
+                    <lightning-input label="Member Details" type="text" value={contactName} disabled>
                     </lightning-input>
 
                 </div>
                 <div class="slds-col slds-size_1-of-2">
 
                     <lightning-input label="Related To" type="text" value={relatedEncounter}
-                    disbaled >
+                    disabled>
                     </lightning-input>
                 </div>
                 <div class="slds-col slds-size_1-of-2">
@@ -41,8 +41,18 @@
                 </div>
                 <div class="slds-col slds-size_1-of-2">
 
-                    <lightning-input label="Assigned To" type="text" value={assignTo} onchange={handleAssignToChange}>
-                    </lightning-input>
+                    <!-- <lightning-input label="Assigned To" type="text" value={assignTo} onchange={handleAssignToChange}>
+                    </lightning-input> -->
+                    <lightning-record-picker
+                    label="Assign To"
+                    placeholder="Search..."
+                    object-api-name="User"
+                    value={assignTo}
+                    onchange={handleAssignToChange}
+                    matching-info={matchingInfo}
+                    display-info={displayInfo}
+                    filter={filter}
+                ></lightning-record-picker>
                     <!-- <lightning-record-picker label="Select a record" placeholder="Search..." object-api-name="Contact"
                         value={initialValue} onchange={handleChange}></lightning-record-picker> -->
 
@@ -72,13 +82,14 @@
                 </div>
             </div>
             <div class="slds-m-top_medium buttons ">
-                <div class="save-button">
-                    <lightning-button label="Save" variant="brand" onclick={handleSave}>
-                    </lightning-button>
-                </div>
+             
 
                 <div class="cancel-button">
                     <lightning-button label="Cancel" onclick={handleClose} class="slds-m-left_x-small">
+                    </lightning-button>
+                </div>
+                <div class="save-button slds-m-right_medium">
+                    <lightning-button label="Save" variant="brand" onclick={handleSave}>
                     </lightning-button>
                 </div>
             </div>

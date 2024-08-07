@@ -29,7 +29,7 @@ export default class createProgressNoteReminderWrapper extends LightningElement 
         this.showLoader = false;
         if (data) {
             this.selectedRecordTypeName = data;
-            this.showPNForm = data === 'Admin Encounter' || data === 'Medical Encounter' || 'High Privacy Encounter';
+            this.showPNForm = data === 'Admin Encounter' || data === 'Medical Encounter' || data === 'High Privacy Encounter';
         } else if (error) {
             console.error('Error fetching case record type:', error);
         }
