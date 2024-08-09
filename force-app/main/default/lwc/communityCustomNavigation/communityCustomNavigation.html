@@ -1,0 +1,37 @@
+<template>
+    <template if:true={showLoading}>
+        <lightning-spinner alternative-text="Loading" size="medium" class="spinnerClass"></lightning-spinner>
+    </template>
+    <template if:false={showLoading}>
+        <div class="big-tile-menu">
+            <template for:each={menuItems} for:item="item" for:index="i">
+                <template if:true={item.navMenuLogo}>
+                    <button 
+                        key={item.navLabel} 
+                        data-label={item.navLabel} 
+                        data-actiontype={item.navActionType} 
+                        class="big-tile" 
+                        style={item.navButtonStyling}
+                        onclick={navigateToItem}>
+                            <img class="nav-image" src={item.navMenuLogo} />
+                            <label class="nav-label">{item.navLabel}</label>
+                    </button>
+                </template>
+                <template if:false={item.navMenuLogo}>
+                    <button 
+                        key={item.navLabel} 
+                        data-label={item.navLabel} 
+                        data-actiontype={item.navActionType} 
+                        class="big-tile" 
+                        style={item.navButtonStyling}
+                        onclick={navigateToItem}>
+                            <img class="nav-image" src={item.navMenuLogo} />
+                            <label class="nav-label">{item.navLabel}</label>
+                    </button>
+                </template>
+            </template>
+            
+        </div>
+        
+    </template>
+</template>

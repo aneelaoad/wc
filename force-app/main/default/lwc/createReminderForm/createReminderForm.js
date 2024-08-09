@@ -16,11 +16,13 @@ export default class CreateReminderForm extends LightningElement {
     type = '';
     comments = '';
     assignTo = Id;
-    status = 'Active';
-    priority= 'High'
+ 
     showLoader = false;
     relatedEncounter;
-    type = "Reminder"
+    type = "Reminder";
+    status = 'Active';
+    priority= 'High';
+    
     priorityOptions = [];
     statusOptions = []
     @api createdPnId;
@@ -31,36 +33,17 @@ export default class CreateReminderForm extends LightningElement {
    @api set recordId(value) {
        this._recordId = value;
        console.log("api _recordId: " + this._recordId);
-    //    this.setCheckRecordId();
+       this.setCheckRecordId();
 
    }
 
    get recordId() {
        return this._recordId;
    }
-//    checkRecordId
-   @api
-    set checkRecordId(value) {
-        this._checkRecordId = value;
-    //    this.setCheckRecordId();
-
-    }
-
-    get checkRecordId() {
-        return this._checkRecordId;
-    }
 
    
     setCheckRecordId() {
-        
-   
         this.checkRecordId = this.parentRecordId || this.recordId;
-        console.log('------------------');
-        console.log('parentRecordId: ',this.parentRecordId);
-        console.log('recordId',this.recordId);
-        console.log('checkRecordId', this.checkRecordId);
-        console.log('------------------');
- 
     }
 
     handleSubjectChange(event) {
@@ -143,10 +126,7 @@ export default class CreateReminderForm extends LightningElement {
                 label: option.label,
                 value: option.value
             }));
-            this.assignToOptions = data.owner.map(option => ({
-                label: option.label,
-                value: option.value
-            }));
+           
         } else if (error) {
             console.error('Error fetching picklist values:', error);
         }
@@ -160,7 +140,6 @@ export default class CreateReminderForm extends LightningElement {
 
     @wire(getRecord, { recordId: "$checkRecordId", fields: CASE_FIELDS })
     encounterDetails(result) {
-        // console.log('encounterDetails result '+JSON.stringify(result));
         if (typeof result.data !== "undefined") {
             const objectRecords = result.data.fields;
             console.log('Encounter Records: '+JSON.stringify(objectRecords));
@@ -172,7 +151,6 @@ export default class CreateReminderForm extends LightningElement {
 
     @wire(getRecord, { recordId: "$checkRecordId", fields: PN_FIELDS })
     progressNoteDetails(result) {
-        // console.log('progressNoteDetails result '+JSON.stringify(result));
         if (typeof result.data !== "undefined") {
             const objectRecords = result.data.fields;
             console.log('Progress Note Records: '+JSON.stringify(objectRecords));
@@ -183,26 +161,9 @@ export default class CreateReminderForm extends LightningElement {
     }
     
 
-    // getObjectName(recordId) {
-    //     getSObjectType({ recordId })
-    //         .then(result => {
-    //             if (result === 'Case') {
-    //                 this.encounterId = recordId; // For Case
-    //                 this.showPNForm = true;
-    //             } else {
-    //                 this.createdPnId = recordId; // For Progress Note
-    //                 this.showReminderForm = true;
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Error determining object type:', error);
-    //         });
-    // }
 
 
     connectedCallback(){
-        console.log('parent id: '+ this.parentRecordId);
-        // this.fetchProgressNoteDetails();
-
+        this.setCheckRecordId();
     }
 }

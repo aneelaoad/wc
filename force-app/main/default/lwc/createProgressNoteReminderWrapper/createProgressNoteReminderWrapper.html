@@ -7,21 +7,21 @@
             <template if:true={showPNForm}>
                 <c-create-progress-note-form 
                     encounter-id={recordId}
+                    encounter-type={selectedRecordTypeName}
+                    encounter-details={encounterDetails}
+                    progress-note-record-type-id={pnSelectedRecordTypeInfo}
                     onpncreated={handlePNCreated}
-                    onclose={handleClose}
-                    encounter-type={selectedRecordTypeName}>
+                    onclose={handleClose}>
                 </c-create-progress-note-form>
             </template>
             <template if:true={showReminderForm}>
                 <c-create-reminder-form 
-                    onclose={handleClose} 
                     created-pn-id={createdPNId} 
-                    onshowloader={handleShowLoader} 
-                    onhideloader={handleHideLoader}
                     parent-record-id={recordId}
                     encounter-id={recordId}
-                    
-                    >
+                    onclose={handleClose} 
+                    onshowloader={handleShowLoader} 
+                    onhideloader={handleHideLoader}>
                 </c-create-reminder-form>
             </template>
         </lightning-card>

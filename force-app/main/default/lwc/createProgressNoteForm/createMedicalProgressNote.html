@@ -1,0 +1,71 @@
+<template>
+	<lightning-quick-action-panel header="New Medical Progress Note">
+		<template if:true={showLoader}>
+			<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+		</template>
+		<template if:false={showLoader}>
+			<lightning-record-edit-form object-api-name="Progress_Note__c" record-type-id={progressNoteRecordTypeId} 
+				onsuccess={handleSuccess} onsubmit={handleSubmit} density="comfy">
+				<lightning-messages></lightning-messages>
+				<div class="slds-grid"><h3 class="slds-text-heading_medium slds-p-vertical_medium">Progress Note Information</h3></div>
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input label="Member Details" value={encounterDetails.Member_Details__c.value} 
+						variant="label-stacked" disabled=true></lightning-input>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						
+						<lightning-input-field field-name="Encounter__c" value={encounterId} variant="label-stacked" disabled>
+						</lightning-input-field>
+					</div>
+					
+				</div>
+				<div class="slds-grid">
+					<lightning-input-field field-name="Summary_Content__c" variant="label-stacked"></lightning-input-field>
+				</div>
+				<div class="slds-grid">
+					<lightning-input-field field-name="Notes__c" variant="label-stacked"></lightning-input-field>
+				</div>
+				<div class="slds-grid"><h3 class="slds-text-heading_medium slds-p-vertical_medium">Progress Note Details</h3></div>
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Actual_Date__c" variant="label-stacked"></lightning-input-field>
+					</div>
+				</div>
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="On_Behalf_Of__c" variant="label-stacked"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Difficulty__c" variant="label-stacked"></lightning-input-field>
+					</div>
+					
+				</div>
+				
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Mute_Sending_the_Email_Alert__c" ></lightning-input-field>
+					</div>
+					
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Was_there_patient_contact__c" variant="label-stacked"></lightning-input-field>
+					</div>
+				</div>
+				<div class="slds-grid"><h3 class="slds-text-heading_medium slds-p-vertical_medium">Informant Information</h3></div>
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Informant_Name__c" variant="label-stacked"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Mode_of_Contact__c" ></lightning-input-field>
+					</div>
+					
+				</div>
+				<footer class="slds-modal__footer slds-text-align_center">
+					<lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+					<lightning-button variant="brand" type="submit" name="save" label="Save" class="slds-p-left_small"></lightning-button>
+				</footer>
+			</lightning-record-edit-form>
+		</template>
+	</lightning-quick-action-panel>
+</template>

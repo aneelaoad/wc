@@ -1,73 +1,54 @@
 <template>
-	 <lightning-quick-action-panel header="New Progress Note">
-     
-    </lightning-quick-action-panel>
-	<div class="progress-note-form">
-
-		<template if:true={showLoader}>
-			<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
-		</template>
-		<template if:false={showLoader}>
-			<lightning-record-edit-form object-api-name="Progress_Note__c" onsuccess={handleSuccess}
-				onsubmit={handleSubmit}>
-				<lightning-messages></lightning-messages>
-
-				<div class="form-row">
-					<div class="form-col">
-						<lightning-input-field field-name="Encounter__c" value={encounterId} >
-						</lightning-input-field>
-					</div>
-					<div class="form-col">
-
-						<lightning-input label="Patient Details" value={contactName} disabled></lightning-input>
-					</div>
-				
-				</div>
-
-
-
-
-				<div class="form-row">
-					
+	<lightning-quick-action-panel header="New Progress Note">
+		<div class="progress-note-form">
+			<template if:true={showLoader}>
+				<lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+			</template>
+			<template if:false={showLoader}>
+				<lightning-record-edit-form object-api-name="Progress_Note__c" onsuccess={handleSuccess}
+					onsubmit={handleSubmit}>
+					<lightning-messages></lightning-messages>
+					<div class="form-row">
 						<div class="form-col">
-						<lightning-input-field field-name="Difficulty__c"></lightning-input-field>
+							<lightning-input-field field-name="Encounter__c" value={encounterId} disabled>
+							</lightning-input-field>
+						</div>
+						<div class="form-col">
+							<lightning-input label="Patient Details" value={encounterDetails.Member_Details__c} disabled></lightning-input>
+						</div>
 					</div>
-					<div class="form-col">
-						<lightning-input-field field-name="On_Behalf_Of__c"></lightning-input-field>
-
+					<div class="form-row">
+						<div class="form-col">
+							<lightning-input-field field-name="Difficulty__c"></lightning-input-field>
+						</div>
+						<div class="form-col">
+							<lightning-input-field field-name="On_Behalf_Of__c"></lightning-input-field>
+						</div>
 					</div>
-				</div>
-
-				<div class="form-row">
-					<div class="form-col-full">
-						<lightning-input-field field-name="Summary_Content__c"></lightning-input-field>
+					<div class="form-row">
+						<div class="form-col-full">
+							<lightning-input-field field-name="Summary_Content__c"></lightning-input-field>
+						</div>
 					</div>
-				</div>
-				<div class="form-row">
-					<div class="form-col-full">
-						<lightning-input-field field-name="Notes__c"></lightning-input-field>
+					<div class="form-row">
+						<div class="form-col-full">
+							<lightning-input-field field-name="Notes__c"></lightning-input-field>
+						</div>
 					</div>
-				</div>
-				<div class="form-row">
-
-				<div class="form-col-full">
-						<lightning-input-field field-name="Actual_Date__c"></lightning-input-field>
+					<div class="form-row">
+						<div class="form-col-full">
+							<lightning-input-field field-name="Actual_Date__c"></lightning-input-field>
+						</div>
 					</div>
-					</div>
-
-				<div class="form-row buttons">
-					<lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
-					<lightning-button variant="brand" type="submit" name="save" label="Save"></lightning-button>
-				</div>
-			</lightning-record-edit-form>
-		</template>
-	</div>
-
-
-
-
-
-
-
 	
+					<div slot="footer">
+						<div class="form-row buttons">
+							<lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+							<lightning-button variant="brand" type="submit" name="save" label="Save"></lightning-button>
+						</div>
+					</div>
+				</lightning-record-edit-form>
+			</template>
+		</div>
+	</lightning-quick-action-panel>
 </template>
